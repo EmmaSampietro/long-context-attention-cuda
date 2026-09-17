@@ -187,3 +187,5 @@ Natural next steps: layer the windowed iterator on an FA-2 backbone to compound 
 ## About
 
 Final project for **Stanford CME 213, Parallel Computing with CUDA, MPI and OpenMP** (Spring 2026), by **Emma Sampietro** and **Arturo Favara**. The full analysis — performance model, roofline study, Amdahl and isoefficiency treatment, and appendices — is in [CME213_Final_Report.pdf](CME213_Final_Report.pdf).
+
+Graded *66/60 (outstanding project)*
