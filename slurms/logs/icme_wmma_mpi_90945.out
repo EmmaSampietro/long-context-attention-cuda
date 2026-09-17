@@ -1,0 +1,70 @@
+=== Host: hpcc-gpu-5-5  Date: 2026-06-05T20:52:48Z ===
+0, Quadro RTX 6000
+1, Quadro RTX 6000
+2, Quadro RTX 6000
+3, Quadro RTX 6000
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -ccbin mpicxx -Isrc/common -c -o build/seq_parallel.o src/mpi/seq_parallel.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/dense_fp16.o src/kernels/dense_fp16.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/windowed.o src/kernels/windowed.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/windowed_fp16.o src/kernels/windowed_fp16.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/blocksparse.o src/kernels/blocksparse.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/dispatch.o src/common/dispatch.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/sparse_formats.o src/common/sparse_formats.cu
+nvcc -arch=sm_75 -ccbin mpicxx -o build/attn_mpi_seqpar build/seq_parallel.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/dispatch.o build/sparse_formats.o
+
+------ kernel=windowed  N=4096  ranks=1 ------
+mpi=seqpar ranks=1 kernel=windowed N=4096 d=64 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=4.0873
+
+------ kernel=windowed  N=8192  ranks=1 ------
+mpi=seqpar ranks=1 kernel=windowed N=8192 d=64 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=8.2973
+
+------ kernel=windowed  N=16384  ranks=1 ------
+mpi=seqpar ranks=1 kernel=windowed N=16384 d=64 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=16.6075
+
+------ kernel=windowed_fp16  N=4096  ranks=1 ------
+mpi=seqpar ranks=1 kernel=windowed_fp16 N=4096 d=64 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=1.0006
+
+------ kernel=windowed_fp16  N=8192  ranks=1 ------
+mpi=seqpar ranks=1 kernel=windowed_fp16 N=8192 d=64 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=1.9881
+
+------ kernel=windowed_fp16  N=16384  ranks=1 ------
+mpi=seqpar ranks=1 kernel=windowed_fp16 N=16384 d=64 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=3.9686
+
+------ kernel=windowed  N=4096  ranks=2 ------
+mpi=seqpar ranks=2 kernel=windowed N=4096 d=64 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=2.5942
+
+------ kernel=windowed  N=8192  ranks=2 ------
+mpi=seqpar ranks=2 kernel=windowed N=8192 d=64 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=4.6917
+
+------ kernel=windowed  N=16384  ranks=2 ------
+mpi=seqpar ranks=2 kernel=windowed N=16384 d=64 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=8.8697
+
+------ kernel=windowed_fp16  N=4096  ranks=2 ------
+mpi=seqpar ranks=2 kernel=windowed_fp16 N=4096 d=64 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=0.9489
+
+------ kernel=windowed_fp16  N=8192  ranks=2 ------
+mpi=seqpar ranks=2 kernel=windowed_fp16 N=8192 d=64 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=1.4512
+
+------ kernel=windowed_fp16  N=16384  ranks=2 ------
+mpi=seqpar ranks=2 kernel=windowed_fp16 N=16384 d=64 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=2.4485
+
+------ kernel=windowed  N=4096  ranks=4 ------
+mpi=seqpar ranks=4 kernel=windowed N=4096 d=64 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=1.7396
+
+------ kernel=windowed  N=8192  ranks=4 ------
+mpi=seqpar ranks=4 kernel=windowed N=8192 d=64 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=2.8410
+
+------ kernel=windowed  N=16384  ranks=4 ------
+mpi=seqpar ranks=4 kernel=windowed N=16384 d=64 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=4.9026
+
+------ kernel=windowed_fp16  N=4096  ranks=4 ------
+mpi=seqpar ranks=4 kernel=windowed_fp16 N=4096 d=64 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=0.7929
+
+------ kernel=windowed_fp16  N=8192  ranks=4 ------
+mpi=seqpar ranks=4 kernel=windowed_fp16 N=8192 d=64 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=1.0644
+
+------ kernel=windowed_fp16  N=16384  ranks=4 ------
+mpi=seqpar ranks=4 kernel=windowed_fp16 N=16384 d=64 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=1.5620
+
+Summary: report/data/icme_wmma_mpi_hpcc-gpu-5-5_90945.csv
+=== Done ===

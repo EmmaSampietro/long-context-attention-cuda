@@ -1,0 +1,7 @@
+src/kernels/dense_fp16.cu(319): error: no instance of function template "<unnamed>::dense_fp16_forward_kernel" matches the argument list
+            argument types are: (const float *, const float *, const float *, float *, const int)
+      dense_fp16_forward_kernel<Br, Bc, D>
+      ^
+
+1 error detected in the compilation of "src/kernels/dense_fp16.cu".
+make: *** [Makefile:47: build/dense_fp16.o] Error 2

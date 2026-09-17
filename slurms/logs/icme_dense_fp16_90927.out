@@ -1,0 +1,18 @@
+=== Host: hpcc-gpu-5-5  Date: 2026-06-05T20:03:32Z ===
+N_LIST=1024,2048,4096,8192,16384,32768  H=16
+0, Quadro RTX 6000
+1, Quadro RTX 6000
+2, Quadro RTX 6000
+3, Quadro RTX 6000
+make: Nothing to be done for 'all'.
+  dense_fp16  N=  1024  ms_median=0.5229  mem_mb=18.00
+  dense_fp16  N=  2048  ms_median=1.8442  mem_mb=34.00
+  dense_fp16  N=  4096  ms_median=7.0851  mem_mb=66.00
+  dense_fp16  N=  8192  ms_median=31.0724  mem_mb=130.00
+  dense_fp16  N= 16384  ms_median=122.9306  mem_mb=258.00
+  dense_fp16  N= 32768  ms_median=499.0606  mem_mb=514.00
+
+appended to report/data/dense_fp16_sweep_hpcc-gpu-5-5_90927.csv
+
+CSV written to report/data/dense_fp16_sweep_hpcc-gpu-5-5_90927.csv
+=== Done ===

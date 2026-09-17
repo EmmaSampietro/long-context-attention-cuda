@@ -1,0 +1,27 @@
+=== Host: hpcc-gpu-5-1  Date: 2026-06-07T04:00:24Z ===
+0, Quadro RTX 6000
+1, Quadro RTX 6000
+2, Quadro RTX 6000
+3, Quadro RTX 6000
+
+torch=2.12.0+cu130  cuda=13.0  is_avail=False
+
+=== Build libattn.so ===
+rm -rf build *.nsys-rep *.ncu-rep
+mkdir -p build
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/attn_capi.o src/cli/attn_capi.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/dense.o src/kernels/dense.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/dense_fp16.o src/kernels/dense_fp16.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/windowed.o src/kernels/windowed.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/windowed_fp16.o src/kernels/windowed_fp16.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/blocksparse.o src/kernels/blocksparse.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/blocksparse_fp16.o src/kernels/blocksparse_fp16.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/dispatch.o src/common/dispatch.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/sparse_formats.o src/common/sparse_formats.cu
+nvcc -arch=sm_75 --shared -Xcompiler -fPIC -o build/libattn.so build/attn_capi.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/blocksparse_fp16.o build/dispatch.o build/sparse_formats.o
+
+=== End-to-end layer benchmark, d=64 (d_model=1024, H=16) ===
+
+=== End-to-end layer benchmark, d=128 (d_model=2048, H=16) ===
+
+=== Done ===

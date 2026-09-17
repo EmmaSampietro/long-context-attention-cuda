@@ -1,0 +1,25 @@
+=== Host: hpcc-gpu-5-1  Date: 2026-06-05T02:07:44Z ===
+Using python: /home/cme213/esampi/miniconda3/envs/attn/bin/python
+Python 3.10.20
+0, Quadro RTX 6000, 23040 MiB
+1, Quadro RTX 6000, 23040 MiB
+2, Quadro RTX 6000, 23040 MiB
+3, Quadro RTX 6000, 23040 MiB
+torch 2.7.1+cu118  cuda 11.8  device Quadro RTX 6000
+  torch_sdpa_fp32    N=  1024  ms_median=   0.7414  mem_mb=   20.00
+  torch_sdpa_fp16    N=  1024  ms_median=   0.1938  mem_mb=   10.00
+  torch_sdpa_fp32    N=  2048  ms_median=   2.9138  mem_mb=   40.00
+  torch_sdpa_fp16    N=  2048  ms_median=   0.6205  mem_mb=   20.00
+  torch_sdpa_fp32    N=  4096  ms_median=  10.5957  mem_mb=   80.00
+  torch_sdpa_fp16    N=  4096  ms_median=   2.2340  mem_mb=   40.00
+  torch_sdpa_fp32    N=  8192  ms_median=  40.8011  mem_mb=  160.00
+  torch_sdpa_fp16    N=  8192  ms_median=   8.5196  mem_mb=   80.00
+  torch_sdpa_fp32    N= 16384  ms_median= 160.4315  mem_mb=  320.00
+  torch_sdpa_fp16    N= 16384  ms_median=  33.2587  mem_mb=  160.00
+  torch_sdpa_fp32    N= 32768  ms_median= 641.7195  mem_mb=  640.00
+  torch_sdpa_fp16    N= 32768  ms_median= 133.0509  mem_mb=  320.00
+
+appended to report/data/sdpa_baseline_hpcc-gpu-5-1_90854.csv
+
+CSV written to report/data/sdpa_baseline_hpcc-gpu-5-1_90854.csv
+=== Done ===

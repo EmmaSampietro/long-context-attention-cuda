@@ -1,0 +1,16 @@
+=== Host: hpcc-gpu-5-2  Date: 2026-06-05T18:46:55Z ===
+Using NCU temp dir: /home/cme213/esampi/.cache/nsight-compute-90911
+0, Quadro RTX 6000
+1, Quadro RTX 6000
+2, Quadro RTX 6000
+3, Quadro RTX 6000
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/attn_main.o src/cli/attn_main.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/windowed.o src/kernels/windowed.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/blocksparse.o src/kernels/blocksparse.cu
+nvcc -arch=sm_75 -o build/attn build/attn_main.o build/dense.o build/windowed.o build/blocksparse.o build/dispatch.o build/sparse_formats.o
+nvcc -arch=sm_75 -o build/test_dense build/test_dense.o build/dense.o build/windowed.o build/blocksparse.o build/dispatch.o build/sparse_formats.o
+nvcc -arch=sm_75 -o build/test_windowed build/test_windowed.o build/dense.o build/windowed.o build/blocksparse.o build/dispatch.o build/sparse_formats.o
+nvcc -arch=sm_75 -o build/test_blocksparse build/test_blocksparse.o build/dense.o build/windowed.o build/blocksparse.o build/dispatch.o build/sparse_formats.o
+
+================ dense ================
+==ERROR== unrecognised option '--temp-dir'. Use --help for further details.

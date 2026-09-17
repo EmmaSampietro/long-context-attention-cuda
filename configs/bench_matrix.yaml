@@ -1,0 +1,119 @@
+# Benchmark matrix — drives bench/sweep.py.
+# Derived from action_plan.tex §"Benchmarking Strategy" (post-M2 refocus).
+# Three kernels: dense (A) | windowed (B) | blocksparse (C).
+# Two MPI strategies: head-parallel | sequence-parallel windowed.
+
+# === Single-GPU ============================================================
+
+n_sweep_crossover:
+  # Primary axis — the figure that answers the central research question.
+  kernels: [dense, windowed, blocksparse]
+  N: [1024, 2048, 4096, 8192, 16384, 32768]
+  d: 64
+  H: 16
+  w: 256        # used by windowed only
+  rho: 0.1      # used by blocksparse only
+  B_block: 64   # used by blocksparse only
+
+window_size_sweep:
+  kernels: [windowed]
+  N: 8192
+  d: 64
+  H: 16
+  w: [64, 128, 256, 512]
+
+block_density_sweep:
+  kernels: [blocksparse]
+  N: 8192
+  d: 64
+  H: 16
+  rho: [0.05, 0.1, 0.25, 0.5]
+  B_block: 64
+
+head_dim_sweep:
+  kernels: [dense, windowed, blocksparse]
+  N: 4096
+  d: [64, 128]
+  H: 16
+  w: 256
+  rho: 0.1
+
+causal_toggle:
+  kernels: [dense, windowed, blocksparse]
+  N: 4096
+  d: 64
+  H: 16
+  causal: [false, true]
+
+# === Multi-GPU =============================================================
+
+strong_scaling_headpar:
+  # Communication is identical across all three kernels — any kernel-time
+  # difference at fixed P is purely from the kernel itself. By design.
+  kernels: [dense, windowed, blocksparse]
+  mpi_strategy: head_parallel
+  N: 4096
+  d: 64
+  H: 16
+  P: [1, 2, 4]
+
+weak_scaling_headpar:
+  kernels: [dense, windowed, blocksparse]
+  mpi_strategy: head_parallel
+  N: 4096
+  d: 64
+  H_per_P: 4
+  P: [1, 2, 4]
+
+seqpar_vs_headpar_windowed:
+  # Compare halo-exchange cost (O(w*d)) against gather (O(H*N*d/P)).
+  kernels: [windowed]
+  mpi_strategy: [head_parallel, seq_parallel]
+  N: [4096, 8192, 16384]
+  d: 64
+  H: 16
+  w: 256
+  P: [1, 2, 4]
+
+# === Approximation quality (single-GPU, batch=1) ============================
+
+approx_quality:
+  kernels: [windowed, blocksparse]
+  inputs: [mostly_local, global_needles, uniform]
+  N: [4096, 8192]
+  d: 64
+  H: 1
+  w: [64, 128, 256, 512]      # windowed only
+  rho: [0.05, 0.1, 0.25, 0.5] # blocksparse only
+  B_block: 64
+
+# === Reproducibility & timing policy ========================================
+
+record_columns:
+  - timestamp
+  - git_commit
+  - gpu_model
+  - cuda_version
+  - kernel
+  - mpi_strategy
+  - N
+  - d
+  - H
+  - w
+  - rho
+  - B_block
+  - P
+  - causal
+  - precision
+  - time_ms_median
+  - time_ms_std
+  - peak_mem_MB
+  - tflops
+  - gbytes_per_sec
+  - l2_error
+  - linf_error
+
+timing_policy:
+  warmup_iters: 5
+  measure_iters: 10
+  aggregate: median

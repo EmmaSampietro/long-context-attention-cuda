@@ -1,0 +1,51 @@
+=== Host: hpcc-gpu-5-1  Date: 2026-06-05T02:30:03Z ===
+N_LIST=1024,2048,4096,8192,16384,32768  H=16  w=256  G=8  rho=0.10  B=64
+0, Quadro RTX 6000
+1, Quadro RTX 6000
+2, Quadro RTX 6000
+3, Quadro RTX 6000
+rm -rf build *.nsys-rep *.ncu-rep
+mkdir -p build
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/attn_main.o src/cli/attn_main.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/dense.o src/kernels/dense.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/windowed.o src/kernels/windowed.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/blocksparse.o src/kernels/blocksparse.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/dispatch.o src/common/dispatch.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/sparse_formats.o src/common/sparse_formats.cu
+nvcc -arch=sm_75 -o build/attn build/attn_main.o build/dense.o build/windowed.o build/blocksparse.o build/dispatch.o build/sparse_formats.o
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/test_dense.o tests/test_dense.cu
+nvcc -arch=sm_75 -o build/test_dense build/test_dense.o build/dense.o build/windowed.o build/blocksparse.o build/dispatch.o build/sparse_formats.o
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/test_windowed.o tests/test_windowed.cu
+nvcc -arch=sm_75 -o build/test_windowed build/test_windowed.o build/dense.o build/windowed.o build/blocksparse.o build/dispatch.o build/sparse_formats.o
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/test_blocksparse.o tests/test_blocksparse.cu
+nvcc -arch=sm_75 -o build/test_blocksparse build/test_blocksparse.o build/dense.o build/windowed.o build/blocksparse.o build/dispatch.o build/sparse_formats.o
+  dense       N=  1024  ms_median=2.6699  mem_mb=18.00
+  windowed    N=  1024  ms_median=1.7661  mem_mb=18.00
+  blocksparse N=  1024  ms_median=0.3314  mem_mb=20.00
+  dense       N=  2048  ms_median=10.0840  mem_mb=34.00
+  windowed    N=  2048  ms_median=3.8395  mem_mb=34.00
+  blocksparse N=  2048  ms_median=1.0996  mem_mb=36.00
+  dense       N=  4096  ms_median=37.7796  mem_mb=66.00
+  windowed    N=  4096  ms_median=8.1793  mem_mb=66.00
+  blocksparse N=  4096  ms_median=4.0484  mem_mb=68.00
+  dense       N=  8192  ms_median=150.7378  mem_mb=130.00
+  windowed    N=  8192  ms_median=16.7649  mem_mb=130.00
+  blocksparse N=  8192  ms_median=15.5640  mem_mb=132.00
+  dense       N= 16384  ms_median=595.2060  mem_mb=258.00
+  windowed    N= 16384  ms_median=33.9928  mem_mb=258.00
+  blocksparse N= 16384  ms_median=59.6307  mem_mb=260.00
+  dense       N= 32768  ms_median=2377.2117  mem_mb=514.00
+  windowed    N= 32768  ms_median=67.5284  mem_mb=514.00
+  blocksparse N= 32768  ms_median=236.4993  mem_mb=516.00
+
+appended to report/data/final_crossover_vec_hpcc-gpu-5-1_90855.csv
+
+================ dense ================
+==PROF== Connected to process 1531315 (/home/cme213/esampi/project/build/attn)
+
+==ERROR== Failed to open/create lock file /tmp/nsight-compute-lock. Please check that this process has write permissions on this file. See https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#faq for more details.
+==ERROR== Failed to profile "dense_forward_kernel" in process 1531315
+==PROF== Trying to shutdown target application
+==ERROR== The application returned an error code (9).
+==ERROR== An error occurred while trying to profile.
+==WARNING== No kernels were profiled.

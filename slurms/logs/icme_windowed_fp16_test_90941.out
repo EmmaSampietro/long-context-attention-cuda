@@ -1,0 +1,12 @@
+=== Host: hpcc-gpu-5-5  Date: 2026-06-05T20:47:09Z ===
+0, Quadro RTX 6000
+1, Quadro RTX 6000
+2, Quadro RTX 6000
+3, Quadro RTX 6000
+
+=== make clean && make all ===
+rm -rf build *.nsys-rep *.ncu-rep
+mkdir -p build
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/attn_main.o src/cli/attn_main.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/dense.o src/kernels/dense.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/dense_fp16.o src/kernels/dense_fp16.cu

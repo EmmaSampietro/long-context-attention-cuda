@@ -1,0 +1,118 @@
+=== Host: hpcc-gpu-5-1  Date: 2026-05-10T03:45:04Z ===
+Sat May  9 20:45:04 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 550.54.15              Driver Version: 550.54.15      CUDA Version: 12.4     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Quadro RTX 6000                On  |   00000000:01:00.0 Off |                    0 |
+| 33%   38C    P8             31W /  260W |       0MiB /  23040MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   1  Quadro RTX 6000                On  |   00000000:41:00.0 Off |                    0 |
+| 33%   42C    P8             29W /  260W |       0MiB /  23040MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   2  Quadro RTX 6000                On  |   00000000:81:00.0 Off |                    0 |
+| 34%   37C    P8             20W /  260W |       0MiB /  23040MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   3  Quadro RTX 6000                On  |   00000000:C1:00.0 Off |                    0 |
+| 33%   30C    P8             16W /  260W |       0MiB /  23040MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+/home/cme213/software/nvidia-hpc-sdk/2024_24.1/Linux_x86_64/24.1/compilers/bin/nvcc
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2023 NVIDIA Corporation
+Built on Fri_Nov__3_17:16:49_PDT_2023
+Cuda compilation tools, release 12.3, V12.3.103
+Build cuda_12.3.r12.3/compiler.33492891_0
+=== SM_ARCH=sm_75 ===
+rm -rf build *.nsys-rep *.ncu-rep
+mkdir -p build
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/attn_main.o src/cli/attn_main.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/dense.o src/kernels/dense.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/windowed.o src/kernels/windowed.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/blocksparse.o src/kernels/blocksparse.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/dispatch.o src/common/dispatch.cu
+nvcc -arch=sm_75 -o build/attn build/attn_main.o build/dense.o build/windowed.o build/blocksparse.o build/dispatch.o
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/test_dense.o tests/test_dense.cu
+nvcc -arch=sm_75 -o build/test_dense build/test_dense.o build/dense.o build/windowed.o build/blocksparse.o build/dispatch.o
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/test_windowed.o tests/test_windowed.cu
+nvcc -arch=sm_75 -o build/test_windowed build/test_windowed.o build/dense.o build/windowed.o build/blocksparse.o build/dispatch.o
+--- in-process smoke (CPU reference vs GPU) ---
+build/test_dense
+[smoke] N=128 d=64  ms=0.094  max_abs=1.788e-07  max_rel=1.446e-04
+[smoke] PASS
+build/test_windowed
+[smoke-windowed] N=128 d=64 w=16 G=0  ms=0.091  max_abs=3.278e-07  max_rel=3.882e-03  PASS
+[smoke-windowed] N=128 d=64 w=64 G=0  ms=0.078  max_abs=2.682e-07  max_rel=1.551e-02  PASS
+[smoke-windowed] N=128 d=64 w=256 G=0  ms=0.079  max_abs=1.788e-07  max_rel=1.446e-04  PASS
+[smoke-windowed] N=128 d=64 w=16 G=8  ms=0.078  max_abs=3.278e-07  max_rel=1.985e-03  PASS
+[smoke-windowed] N=256 d=64 w=32 G=0  ms=0.109  max_abs=3.800e-07  max_rel=2.233e-03  PASS
+[smoke-windowed] PASS (5 cases)
+--- numpy numerical validation: dense ---
+[PASS] dense       N=  128 d= 64 H=  1  max_abs=4.172e-07  max_rel=1.625e-03  rel_l2=3.697e-07  ms_median=0.0800
+[PASS] dense       N= 1024 d= 64 H=  4  max_abs=5.662e-07  max_rel=2.228e-02  rel_l2=7.934e-07  ms_median=0.5894
+[PASS] dense       N= 2048 d= 64 H= 16  max_abs=5.364e-07  max_rel=2.928e-02  rel_l2=1.085e-06  ms_median=8.9572
+
+3/3 cases passed.
+--- numpy numerical validation: windowed ---
+[PASS] windowed    N=  128 d= 64 H=  1 w=  16 G=  0  max_abs=6.557e-07  max_rel=3.229e-04  rel_l2=2.278e-07  ms_median=0.0845
+[PASS] windowed    N= 1024 d= 64 H=  4 w= 128 G=  0  max_abs=8.345e-07  max_rel=1.727e-02  rel_l2=4.269e-07  ms_median=0.2074
+[PASS] windowed    N= 2048 d= 64 H= 16 w= 256 G=  8  max_abs=8.047e-07  max_rel=3.775e-02  rel_l2=5.728e-07  ms_median=3.3300
+[PASS] windowed    N=  512 d= 64 H=  1 w=4096 G=  0  max_abs=3.278e-07  max_rel=5.689e-03  rel_l2=6.054e-07  ms_median=0.2841
+[PASS] windowed    N=  512 d= 64 H=  1 w=   0 G=  4  max_abs=5.960e-07  max_rel=1.269e-03  rel_l2=1.255e-07  ms_median=0.2820
+
+5/5 cases passed.
+--- dense N-sweep (H=16) ---
+  N=  512 w=    0 G=  0  ms_median=0.6013
+  N= 1024 w=    0 G=  0  ms_median=2.3038
+  N= 2048 w=    0 G=  0  ms_median=8.9722
+  N= 4096 w=    0 G=  0  ms_median=33.7351
+
+appended to report/data/icme_dense_N_sweep_H16_hpcc-gpu-5-1_83194.csv
+--- windowed N-sweep at w=256, G=8 (the M3 crossover candidate) ---
+  N=  512 w=  256 G=  8  ms_median=0.6089
+  N= 1024 w=  256 G=  8  ms_median=1.5391
+  N= 2048 w=  256 G=  8  ms_median=3.3432
+  N= 4096 w=  256 G=  8  ms_median=7.0291
+  N= 8192 w=  256 G=  8  ms_median=14.4932
+
+appended to report/data/icme_windowed_N_sweep_w256_hpcc-gpu-5-1_83194.csv
+--- windowed w-sweep at fixed N=4096 ---
+  N= 4096 w=   32 G=  0  ms_median=1.7754
+
+appended to report/data/icme_windowed_w_sweep_N4096_hpcc-gpu-5-1_83194.csv
+  N= 4096 w=   64 G=  0  ms_median=1.7831
+
+appended to report/data/icme_windowed_w_sweep_N4096_hpcc-gpu-5-1_83194.csv
+  N= 4096 w=  128 G=  0  ms_median=2.8034
+
+appended to report/data/icme_windowed_w_sweep_N4096_hpcc-gpu-5-1_83194.csv
+  N= 4096 w=  256 G=  0  ms_median=4.7893
+
+appended to report/data/icme_windowed_w_sweep_N4096_hpcc-gpu-5-1_83194.csv
+  N= 4096 w=  512 G=  0  ms_median=8.5379
+
+appended to report/data/icme_windowed_w_sweep_N4096_hpcc-gpu-5-1_83194.csv
+  N= 4096 w= 1024 G=  0  ms_median=15.3348
+
+appended to report/data/icme_windowed_w_sweep_N4096_hpcc-gpu-5-1_83194.csv
+  N= 4096 w= 2048 G=  0  ms_median=25.7983
+
+appended to report/data/icme_windowed_w_sweep_N4096_hpcc-gpu-5-1_83194.csv
+  N= 4096 w= 4096 G=  0  ms_median=35.3704
+
+appended to report/data/icme_windowed_w_sweep_N4096_hpcc-gpu-5-1_83194.csv
+=== Done ===

@@ -1,0 +1,9 @@
+timestamp,host,git_commit,gpu_model,kernel,N,d,H,w,G,ms_median,ms_min,ms_max
+2026-05-10T03:46:13Z,hpcc-gpu-5-1,unknown,Quadro RTX 6000,windowed,4096,64,16,32,0,1.7754,1.7622,1.7902
+2026-05-10T03:46:13Z,hpcc-gpu-5-1,unknown,Quadro RTX 6000,windowed,4096,64,16,64,0,1.7831,1.7681,1.7935
+2026-05-10T03:46:13Z,hpcc-gpu-5-1,unknown,Quadro RTX 6000,windowed,4096,64,16,128,0,2.8034,2.7831,2.8222
+2026-05-10T03:46:14Z,hpcc-gpu-5-1,unknown,Quadro RTX 6000,windowed,4096,64,16,256,0,4.7893,4.7751,4.8311
+2026-05-10T03:46:14Z,hpcc-gpu-5-1,unknown,Quadro RTX 6000,windowed,4096,64,16,512,0,8.5379,8.4834,8.5510
+2026-05-10T03:46:14Z,hpcc-gpu-5-1,unknown,Quadro RTX 6000,windowed,4096,64,16,1024,0,15.3348,15.2826,15.3810
+2026-05-10T03:46:15Z,hpcc-gpu-5-1,unknown,Quadro RTX 6000,windowed,4096,64,16,2048,0,25.7983,25.6340,25.9347
+2026-05-10T03:46:15Z,hpcc-gpu-5-1,unknown,Quadro RTX 6000,windowed,4096,64,16,4096,0,35.3704,35.1661,35.5194

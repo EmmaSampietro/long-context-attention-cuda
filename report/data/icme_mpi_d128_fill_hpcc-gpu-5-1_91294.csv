@@ -1,0 +1,13 @@
+driver,ranks,kernel,N,H,d,extra,ms_per_iter
+headpar,1,blocksparse,16384,16,128,B=32/rho=0.10,294.1623
+headpar,1,blocksparse_fp16,16384,16,128,B=32/rho=0.10,88.4784
+headpar,2,blocksparse,16384,16,128,B=32/rho=0.10,169.5976
+headpar,2,blocksparse_fp16,16384,16,128,B=32/rho=0.10,65.7333
+headpar,4,blocksparse,16384,16,128,B=32/rho=0.10,107.0550
+headpar,4,blocksparse_fp16,16384,16,128,B=32/rho=0.10,54.5720
+headpar,1,dense,8192,16,128,,737.5934
+headpar,1,dense_fp16,8192,16,128,,194.8948
+headpar,2,dense,8192,16,128,,386.4489
+headpar,2,dense_fp16,8192,16,128,,110.3938
+headpar,4,dense,8192,16,128,,204.1748
+headpar,4,dense_fp16,8192,16,128,,67.2517

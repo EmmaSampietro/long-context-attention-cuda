@@ -1,0 +1,1 @@
+mpi=headpar ranks=4 kernel=blocksparse_fp16 N=8192 d=128 H=16 w=128 G=0 causal=0 ms_per_iter=21.9560

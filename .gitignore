@@ -1,0 +1,46 @@
+# Build artifacts
+build/*
+!build/.gitkeep
+*.o
+*.obj
+*.so
+*.a
+attention
+attention_mpi
+a.out
+code_function.tex
+# CUDA / profiler output
+*.nsys-rep
+*.ncu-rep
+*.qdrep
+*.sqlite
+
+# Benchmark raw outputs (keep CSVs in report/data explicitly committed)
+bench/tmp/
+/tmp_*.bin
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+.ipynb_checkpoints/
+
+# Editor / OS
+.DS_Store
+.vscode/
+.idea/
+*.swp
+
+# LaTeX build byproducts (keep .tex and .bib)
+# NOTE: *.out is scoped to report/ so that slurms/logs/*.out job output
+# is still tracked alongside its *.err counterparts.
+*.aux
+*.log
+report/*.out
+*.toc
+*.bbl
+*.blg
+*.synctex.gz
+*.fdb_latexmk
+*.fls

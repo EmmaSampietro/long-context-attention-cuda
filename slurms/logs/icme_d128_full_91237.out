@@ -1,0 +1,45 @@
+=== Host: hpcc-gpu-5-1  Date: 2026-06-07T01:27:26Z ===
+0, Quadro RTX 6000
+1, Quadro RTX 6000
+2, Quadro RTX 6000
+3, Quadro RTX 6000
+
+=== make clean && make all ===
+rm -rf build *.nsys-rep *.ncu-rep
+mkdir -p build
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/attn_main.o src/cli/attn_main.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/dense.o src/kernels/dense.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/dense_fp16.o src/kernels/dense_fp16.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/windowed.o src/kernels/windowed.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/windowed_fp16.o src/kernels/windowed_fp16.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/blocksparse.o src/kernels/blocksparse.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/blocksparse_fp16.o src/kernels/blocksparse_fp16.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/dispatch.o src/common/dispatch.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/sparse_formats.o src/common/sparse_formats.cu
+nvcc -arch=sm_75 -o build/attn build/attn_main.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/blocksparse_fp16.o build/dispatch.o build/sparse_formats.o
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/test_dense.o tests/test_dense.cu
+nvcc -arch=sm_75 -o build/test_dense build/test_dense.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/blocksparse_fp16.o build/dispatch.o build/sparse_formats.o
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/test_windowed.o tests/test_windowed.cu
+nvcc -arch=sm_75 -o build/test_windowed build/test_windowed.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/blocksparse_fp16.o build/dispatch.o build/sparse_formats.o
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/test_blocksparse.o tests/test_blocksparse.cu
+nvcc -arch=sm_75 -o build/test_blocksparse build/test_blocksparse.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/blocksparse_fp16.o build/dispatch.o build/sparse_formats.o
+
+=== 4.2a-dense  d=128, N=256, H=1 ===
+kernel=dense N=256 d=128 H=1 w=128 G=0 causal=0 ms_median=2.3350 ms_min=2.3350 ms_max=2.3350 mem_mb=2.00
+kernel=dense_fp16 N=256 d=128 H=1 w=128 G=0 causal=0 ms_median=0.3675 ms_min=0.3675 ms_max=0.3675 mem_mb=2.00
+  max_abs=1.079e-04  rel_l2=2.735e-05
+  4.2a-dense OK (FP16 envelope)
+
+=== 4.2b-windowed  d=128, N=256, H=1 ===
+kernel=windowed N=256 d=128 H=1 w=64 G=0 causal=0 ms_median=3.8310 ms_min=3.8310 ms_max=3.8310 mem_mb=2.00
+
+=== 4.2c-blocksparse  d=128, N=256, H=1 ===
+kernel=blocksparse N=256 d=128 H=1 B=32 rho=0.2500 nnz=16 causal=0 ms_median=1.9831 ms_min=1.9831 ms_max=1.9831 mem_mb=2.00
+
+=== Wall time at N=4096, H=16, d=128 (FP16 WMMA path) ===
+--- dense_fp16 ---
+kernel=dense_fp16 N=4096 d=128 H=16 w=128 G=0 causal=0 ms_median=48.6881 ms_min=48.6481 ms_max=48.7519 mem_mb=130.00
+--- windowed_fp16 (w=256, G=0) ---
+--- blocksparse_fp16 (rho=0.10, B=32) ---
+
+=== Done ===

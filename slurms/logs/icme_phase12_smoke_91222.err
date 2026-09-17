@@ -1,0 +1,2 @@
+[blocksparse_fp16] block_row_ptr is null
+1.2 FAILED: rel_l2=1.0

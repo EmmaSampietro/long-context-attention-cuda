@@ -1,0 +1,50 @@
+=== Host: hpcc-gpu-5-1  Date: 2026-06-07T00:21:49Z ===
+0, Quadro RTX 6000
+1, Quadro RTX 6000
+2, Quadro RTX 6000
+3, Quadro RTX 6000
+
+=== make clean && make all ===
+rm -rf build *.nsys-rep *.ncu-rep
+mkdir -p build
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/attn_main.o src/cli/attn_main.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/dense.o src/kernels/dense.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/dense_fp16.o src/kernels/dense_fp16.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/windowed.o src/kernels/windowed.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/windowed_fp16.o src/kernels/windowed_fp16.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/blocksparse.o src/kernels/blocksparse.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/blocksparse_fp16.o src/kernels/blocksparse_fp16.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/dispatch.o src/common/dispatch.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/sparse_formats.o src/common/sparse_formats.cu
+nvcc -arch=sm_75 -o build/attn build/attn_main.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/blocksparse_fp16.o build/dispatch.o build/sparse_formats.o
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/test_dense.o tests/test_dense.cu
+nvcc -arch=sm_75 -o build/test_dense build/test_dense.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/blocksparse_fp16.o build/dispatch.o build/sparse_formats.o
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/test_windowed.o tests/test_windowed.cu
+nvcc -arch=sm_75 -o build/test_windowed build/test_windowed.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/blocksparse_fp16.o build/dispatch.o build/sparse_formats.o
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/test_blocksparse.o tests/test_blocksparse.cu
+nvcc -arch=sm_75 -o build/test_blocksparse build/test_blocksparse.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/blocksparse_fp16.o build/dispatch.o build/sparse_formats.o
+
+=== 4.1a-dense: kernel=dense d=128 N=256 H=1 ===
+kernel=dense N=256 d=128 H=1 w=128 G=0 causal=0 ms_median=2.2441 ms_min=2.2441 ms_max=2.2441 mem_mb=2.00
+  max_abs=2.027e-06  rel_l2=3.942e-07
+  4.1a-dense OK
+
+=== 4.1b-windowed: kernel=windowed d=128 N=256 H=1 ===
+kernel=windowed N=256 d=128 H=1 w=64 G=0 causal=0 ms_median=3.6165 ms_min=3.6165 ms_max=3.6165 mem_mb=2.00
+  max_abs=1.192e-06  rel_l2=2.796e-07
+  4.1b-windowed OK
+
+=== 4.1c-blocksparse: kernel=blocksparse d=128 N=256 H=1 ===
+kernel=blocksparse N=256 d=128 H=1 B=32 rho=1.0000 nnz=64 causal=0 ms_median=2.1531 ms_min=2.1531 ms_max=2.1531 mem_mb=2.00
+  max_abs=2.027e-06  rel_l2=3.942e-07
+  4.1c-blocksparse OK
+
+=== Wall time at N=4096, H=16, d=128 ===
+--- dense d=128 ---
+kernel=dense N=4096 d=128 H=16 w=128 G=0 causal=0 ms_median=187.3582 ms_min=187.2631 ms_max=187.4586 mem_mb=130.00
+--- windowed d=128 (w=256, G=0) ---
+kernel=windowed N=4096 d=128 H=16 w=256 G=0 causal=0 ms_median=25.2251 ms_min=25.1514 ms_max=25.3354 mem_mb=130.00
+--- blocksparse d=128 (rho=0.10, B=32) ---
+kernel=blocksparse N=4096 d=128 H=16 B=32 rho=0.1010 nnz=1654 causal=0 ms_median=19.1391 ms_min=18.9404 ms_max=19.2254 mem_mb=132.00
+
+=== Done ===

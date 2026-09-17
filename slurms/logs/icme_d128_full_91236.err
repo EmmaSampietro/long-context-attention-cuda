@@ -1,0 +1,3 @@
+  4.2a-dense FAILED: rel_l2=0.36236128211021423
+  4.2b-windowed FAILED: rel_l2=0.34723129868507385
+  4.2c-blocksparse FAILED: rel_l2=0.410948246717453

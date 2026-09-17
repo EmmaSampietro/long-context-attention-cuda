@@ -1,0 +1,4 @@
+kernel,n_launches,flops_total,bytes_total,time_total_s,achieved_AI_FLOP_per_byte,achieved_TFLOPS,sm_pct_mean,mem_pct_mean,frac_of_FP32_peak,frac_of_BW_peak
+dense,16,7.007830e+10,1.139301e+08,4.802467e-02,615.0990,1.4592,12.73,22.56,0.0895,0.0038
+windowed,16,1.151359e+10,1.105107e+08,4.788214e-02,104.1853,0.2405,2.10,3.85,0.0148,0.0037
+blocksparse,16,6.984114e+09,1.100448e+08,9.554112e-03,63.4661,0.7310,6.42,12.02,0.0448,0.0185

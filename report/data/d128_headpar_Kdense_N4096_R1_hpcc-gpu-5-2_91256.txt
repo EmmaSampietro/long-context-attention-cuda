@@ -1,0 +1,1 @@
+mpi=headpar ranks=1 kernel=dense N=4096 d=128 H=16 w=128 G=0 causal=0 ms_per_iter=188.0079

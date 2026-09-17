@@ -1,0 +1,6 @@
+timestamp,host,git_commit,gpu_model,kernel,N,d,H,ms_median,ms_min,ms_max
+2026-05-07T00:04:43Z,node3008,unknown,NVIDIA L40S,dense,256,64,1,0.1333,0.1331,0.1350
+2026-05-07T00:04:43Z,node3008,unknown,NVIDIA L40S,dense,512,64,1,0.2558,0.2554,0.2562
+2026-05-07T00:04:43Z,node3008,unknown,NVIDIA L40S,dense,1024,64,1,0.4997,0.4992,0.5064
+2026-05-07T00:04:43Z,node3008,unknown,NVIDIA L40S,dense,2048,64,1,0.9665,0.9653,0.9671
+2026-05-07T00:04:43Z,node3008,unknown,NVIDIA L40S,dense,4096,64,1,1.9810,1.9792,1.9822

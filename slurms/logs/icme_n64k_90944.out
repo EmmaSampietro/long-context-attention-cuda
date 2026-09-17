@@ -1,0 +1,6 @@
+=== Host: hpcc-gpu-5-5  Date: 2026-06-05T20:55:11Z ===
+0, Quadro RTX 6000, 23040 MiB
+1, Quadro RTX 6000, 23040 MiB
+2, Quadro RTX 6000, 23040 MiB
+3, Quadro RTX 6000, 23040 MiB
+nvcc -arch=sm_75 -o build/attn build/attn_main.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/dispatch.o build/sparse_formats.o

@@ -1,0 +1,30 @@
+=== Host: hpcc-gpu-5-2  Date: 2026-06-05T01:52:12Z ===
+N_LIST=1024,2048,4096,8192,16384,32768  H=16  w=256  G=8  rho=0.10  B=64
+0, Quadro RTX 6000, 23040 MiB
+1, Quadro RTX 6000, 23040 MiB
+2, Quadro RTX 6000, 23040 MiB
+3, Quadro RTX 6000, 23040 MiB
+make: Nothing to be done for 'all'.
+  dense       N=  1024  ms_median=3.2555  mem_mb=18.00
+  windowed    N=  1024  ms_median=2.0835  mem_mb=18.00
+  blocksparse N=  1024  ms_median=0.3864  mem_mb=20.00
+  dense       N=  2048  ms_median=12.1743  mem_mb=34.00
+  windowed    N=  2048  ms_median=4.6073  mem_mb=34.00
+  blocksparse N=  2048  ms_median=1.2869  mem_mb=36.00
+  dense       N=  4096  ms_median=45.5987  mem_mb=66.00
+  windowed    N=  4096  ms_median=9.6623  mem_mb=66.00
+  blocksparse N=  4096  ms_median=4.7377  mem_mb=68.00
+  dense       N=  8192  ms_median=181.4747  mem_mb=130.00
+  windowed    N=  8192  ms_median=19.7229  mem_mb=130.00
+  blocksparse N=  8192  ms_median=18.1097  mem_mb=132.00
+  dense       N= 16384  ms_median=715.6411  mem_mb=258.00
+  windowed    N= 16384  ms_median=39.5832  mem_mb=258.00
+  blocksparse N= 16384  ms_median=69.1002  mem_mb=260.00
+  dense       N= 32768  ms_median=2849.2397  mem_mb=514.00
+  windowed    N= 32768  ms_median=80.0694  mem_mb=514.00
+  blocksparse N= 32768  ms_median=274.1619  mem_mb=516.00
+
+appended to report/data/final_crossover_hpcc-gpu-5-2_90852.csv
+
+CSV written to report/data/final_crossover_hpcc-gpu-5-2_90852.csv
+=== Done ===

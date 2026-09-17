@@ -1,0 +1,1 @@
+mpi=seqpar ranks=1 kernel=windowed N=8192 d=128 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=49.7952

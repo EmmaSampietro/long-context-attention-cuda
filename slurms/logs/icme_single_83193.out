@@ -1,0 +1,66 @@
+=== Host: hpcc-gpu-5-1  Date: 2026-05-10T01:53:07Z ===
+Sat May  9 18:53:07 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 550.54.15              Driver Version: 550.54.15      CUDA Version: 12.4     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Quadro RTX 6000                On  |   00000000:01:00.0 Off |                    0 |
+| 33%   39C    P8             31W /  260W |       0MiB /  23040MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   1  Quadro RTX 6000                On  |   00000000:41:00.0 Off |                    0 |
+| 33%   42C    P8             29W /  260W |       0MiB /  23040MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   2  Quadro RTX 6000                On  |   00000000:81:00.0 Off |                    0 |
+| 34%   38C    P8             20W /  260W |       0MiB /  23040MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   3  Quadro RTX 6000                On  |   00000000:C1:00.0 Off |                    0 |
+| 33%   30C    P8             16W /  260W |       0MiB /  23040MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+/home/cme213/software/nvidia-hpc-sdk/2024_24.1/Linux_x86_64/24.1/compilers/bin/nvcc
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2023 NVIDIA Corporation
+Built on Fri_Nov__3_17:16:49_PDT_2023
+Cuda compilation tools, release 12.3, V12.3.103
+Build cuda_12.3.r12.3/compiler.33492891_0
+=== SM_ARCH=sm_75 ===
+rm -rf build *.nsys-rep *.ncu-rep
+mkdir -p build
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/attn_main.o src/cli/attn_main.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/dense.o src/kernels/dense.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/windowed.o src/kernels/windowed.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/blocksparse.o src/kernels/blocksparse.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/dispatch.o src/common/dispatch.cu
+nvcc -arch=sm_75 -o build/attn build/attn_main.o build/dense.o build/windowed.o build/blocksparse.o build/dispatch.o
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/test_dense.o tests/test_dense.cu
+nvcc -arch=sm_75 -o build/test_dense build/test_dense.o build/dense.o build/windowed.o build/blocksparse.o build/dispatch.o
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/test_windowed.o tests/test_windowed.cu
+nvcc -arch=sm_75 -o build/test_windowed build/test_windowed.o build/dense.o build/windowed.o build/blocksparse.o build/dispatch.o
+--- in-process smoke (CPU reference vs GPU) ---
+build/test_dense
+[smoke] N=128 d=64  ms=0.094  max_abs=1.788e-07  max_rel=1.446e-04
+[smoke] PASS
+build/test_windowed
+[smoke-windowed] N=128 d=64 w=16 G=0  ms=0.090  max_abs=3.278e-07  max_rel=3.882e-03  PASS
+[smoke-windowed] N=128 d=64 w=64 G=0  ms=0.080  max_abs=2.682e-07  max_rel=1.551e-02  PASS
+[smoke-windowed] N=128 d=64 w=256 G=0  ms=0.080  max_abs=1.788e-07  max_rel=1.446e-04  PASS
+[smoke-windowed] N=128 d=64 w=16 G=8  ms=0.079  max_abs=3.278e-07  max_rel=1.985e-03  PASS
+[smoke-windowed] N=256 d=64 w=32 G=0  ms=0.109  max_abs=3.800e-07  max_rel=2.233e-03  PASS
+[smoke-windowed] PASS (5 cases)
+--- numpy numerical validation: dense ---
+--- numpy numerical validation: windowed ---
+--- dense N-sweep (H=16) ---

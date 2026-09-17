@@ -1,0 +1,6 @@
+timestamp,host,git_commit,gpu_model,kernel,N,d,H,w,G,ms_median,ms_min,ms_max
+2026-05-10T03:46:10Z,hpcc-gpu-5-1,unknown,Quadro RTX 6000,dense,512,64,16,0,0,0.6013,0.5966,0.6143
+2026-05-10T03:46:10Z,hpcc-gpu-5-1,unknown,Quadro RTX 6000,dense,1024,64,16,0,0,2.3038,2.2285,2.3638
+2026-05-10T03:46:10Z,hpcc-gpu-5-1,unknown,Quadro RTX 6000,dense,2048,64,16,0,0,8.9722,8.9513,8.9968
+2026-05-10T03:46:10Z,hpcc-gpu-5-1,unknown,Quadro RTX 6000,dense,4096,64,16,0,0,33.7351,33.6789,33.8583
+2026-05-10T04:00:00Z,hpcc-gpu-5-1,unknown,Quadro RTX 6000,dense,8192,64,16,0,0,134.4429,134.0000,134.9000

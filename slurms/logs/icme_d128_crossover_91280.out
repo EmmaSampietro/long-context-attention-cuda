@@ -1,0 +1,49 @@
+=== Host: hpcc-gpu-5-1  Date: 2026-06-07T03:29:12Z ===
+0, Quadro RTX 6000
+1, Quadro RTX 6000
+2, Quadro RTX 6000
+3, Quadro RTX 6000
+
+=== make all ===
+make: Nothing to be done for 'all'.
+
+=== Dense d=128 ===
+kernel=dense N=1024 d=128 H=16 w=128 G=0 causal=0 ms_median=12.5999 ms_min=12.5800 ms_max=12.6955 mem_mb=34.00
+kernel=dense N=2048 d=128 H=16 w=128 G=0 causal=0 ms_median=47.1337 ms_min=47.1012 ms_max=47.2414 mem_mb=66.00
+kernel=dense N=4096 d=128 H=16 w=128 G=0 causal=0 ms_median=187.5401 ms_min=187.4384 ms_max=187.6237 mem_mb=130.00
+kernel=dense N=8192 d=128 H=16 w=128 G=0 causal=0 ms_median=737.6132 ms_min=737.4711 ms_max=737.9175 mem_mb=258.00
+kernel=dense_fp16 N=1024 d=128 H=16 w=128 G=0 causal=0 ms_median=2.8356 ms_min=2.8259 ms_max=2.8709 mem_mb=34.00
+kernel=dense_fp16 N=2048 d=128 H=16 w=128 G=0 causal=0 ms_median=10.6868 ms_min=10.5550 ms_max=10.7374 mem_mb=66.00
+kernel=dense_fp16 N=4096 d=128 H=16 w=128 G=0 causal=0 ms_median=49.0985 ms_min=49.0663 ms_max=49.1963 mem_mb=130.00
+kernel=dense_fp16 N=8192 d=128 H=16 w=128 G=0 causal=0 ms_median=194.8930 ms_min=194.8130 ms_max=195.0339 mem_mb=258.00
+kernel=dense_fp16 N=16384 d=128 H=16 w=128 G=0 causal=0 ms_median=782.3068 ms_min=781.4953 ms_max=782.9715 mem_mb=514.00
+
+=== Windowed d=128 (w=256) ===
+kernel=windowed N=1024 d=128 H=16 w=256 G=0 causal=0 ms_median=6.0484 ms_min=6.0114 ms_max=6.0776 mem_mb=34.00
+kernel=windowed N=2048 d=128 H=16 w=256 G=0 causal=0 ms_median=12.5054 ms_min=12.4131 ms_max=12.5304 mem_mb=66.00
+kernel=windowed N=4096 d=128 H=16 w=256 G=0 causal=0 ms_median=25.2610 ms_min=25.1833 ms_max=25.4882 mem_mb=130.00
+kernel=windowed N=8192 d=128 H=16 w=256 G=0 causal=0 ms_median=50.8527 ms_min=50.7558 ms_max=51.0103 mem_mb=258.00
+kernel=windowed N=16384 d=128 H=16 w=256 G=0 causal=0 ms_median=101.8698 ms_min=101.7842 ms_max=101.9713 mem_mb=514.00
+kernel=windowed_fp16 N=1024 d=128 H=16 w=256 G=0 causal=0 ms_median=1.5956 ms_min=1.5830 ms_max=1.6070 mem_mb=34.00
+kernel=windowed_fp16 N=2048 d=128 H=16 w=256 G=0 causal=0 ms_median=3.2825 ms_min=3.2668 ms_max=3.2978 mem_mb=66.00
+kernel=windowed_fp16 N=4096 d=128 H=16 w=256 G=0 causal=0 ms_median=6.6698 ms_min=6.6066 ms_max=6.6915 mem_mb=130.00
+kernel=windowed_fp16 N=8192 d=128 H=16 w=256 G=0 causal=0 ms_median=13.3981 ms_min=13.2780 ms_max=13.4373 mem_mb=258.00
+kernel=windowed_fp16 N=16384 d=128 H=16 w=256 G=0 causal=0 ms_median=26.5960 ms_min=26.5609 ms_max=26.8195 mem_mb=514.00
+
+=== Block-sparse d=128 (rho=0.10, B=32) ===
+kernel=blocksparse N=1024 d=128 H=16 B=32 rho=0.1104 nnz=113 causal=0 ms_median=1.6449 ms_min=1.6203 ms_max=1.6624 mem_mb=36.00
+kernel=blocksparse N=2048 d=128 H=16 B=32 rho=0.1045 nnz=428 causal=0 ms_median=5.2960 ms_min=5.2428 ms_max=5.3226 mem_mb=68.00
+kernel=blocksparse N=4096 d=128 H=16 B=32 rho=0.1010 nnz=1654 causal=0 ms_median=19.0552 ms_min=18.9222 ms_max=19.1941 mem_mb=132.00
+kernel=blocksparse N=8192 d=128 H=16 B=32 rho=0.1015 nnz=6654 causal=0 ms_median=74.7979 ms_min=74.7245 ms_max=74.9453 mem_mb=260.00
+kernel=blocksparse N=16384 d=128 H=16 B=32 rho=0.1007 nnz=26408 causal=0 ms_median=292.2220 ms_min=292.0771 ms_max=292.4148 mem_mb=516.00
+kernel=blocksparse_fp16 N=1024 d=128 H=16 B=32 rho=0.1104 nnz=113 causal=0 ms_median=0.5227 ms_min=0.5201 ms_max=0.5263 mem_mb=36.00
+kernel=blocksparse_fp16 N=2048 d=128 H=16 B=32 rho=0.1045 nnz=428 causal=0 ms_median=1.5270 ms_min=1.5225 ms_max=1.5302 mem_mb=68.00
+kernel=blocksparse_fp16 N=4096 d=128 H=16 B=32 rho=0.1010 nnz=1654 causal=0 ms_median=5.2636 ms_min=5.2471 ms_max=5.2786 mem_mb=132.00
+kernel=blocksparse_fp16 N=8192 d=128 H=16 B=32 rho=0.1015 nnz=6654 causal=0 ms_median=21.1283 ms_min=21.1045 ms_max=21.3054 mem_mb=260.00
+kernel=blocksparse_fp16 N=16384 d=128 H=16 B=32 rho=0.1007 nnz=26408 causal=0 ms_median=86.2942 ms_min=86.2489 ms_max=86.3205 mem_mb=516.00
+
+Summary CSVs:
+  report/data/d128_crossover_dense_hpcc-gpu-5-1_91280.csv
+  report/data/d128_crossover_windowed_hpcc-gpu-5-1_91280.csv
+  report/data/d128_crossover_blocksparse_hpcc-gpu-5-1_91280.csv
+=== Done ===

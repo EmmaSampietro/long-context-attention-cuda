@@ -1,0 +1,10 @@
+
+================ dense ================
+==PROF== Connected to process 1531315 (/home/cme213/esampi/project/build/attn)
+
+==ERROR== Failed to open/create lock file /tmp/nsight-compute-lock. Please check that this process has write permissions on this file. See https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#faq for more details.
+==ERROR== Failed to profile "dense_forward_kernel" in process 1531315
+==PROF== Trying to shutdown target application
+==ERROR== The application returned an error code (9).
+==ERROR== An error occurred while trying to profile.
+==WARNING== No kernels were profiled.

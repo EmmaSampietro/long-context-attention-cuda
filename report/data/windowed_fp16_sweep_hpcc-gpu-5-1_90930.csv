@@ -1,0 +1,7 @@
+timestamp,host,gpu_model,kernel,N,d,H,w,G,B,rho_requested,rho_achieved,nnz,ms_median,ms_min,ms_max,mem_mb
+2026-06-05T20:27:15Z,hpcc-gpu-5-1,Quadro RTX 6000,windowed_fp16,1024,64,16,,,,,,,0.2264,0.2231,0.2283,18.00
+2026-06-05T20:27:15Z,hpcc-gpu-5-1,Quadro RTX 6000,windowed_fp16,2048,64,16,,,,,,,0.4167,0.4155,0.4180,34.00
+2026-06-05T20:27:15Z,hpcc-gpu-5-1,Quadro RTX 6000,windowed_fp16,4096,64,16,,,,,,,0.8190,0.8153,0.8201,66.00
+2026-06-05T20:27:15Z,hpcc-gpu-5-1,Quadro RTX 6000,windowed_fp16,8192,64,16,,,,,,,1.6103,1.5907,1.6206,130.00
+2026-06-05T20:27:15Z,hpcc-gpu-5-1,Quadro RTX 6000,windowed_fp16,16384,64,16,,,,,,,3.1926,3.1870,3.2001,258.00
+2026-06-05T20:27:15Z,hpcc-gpu-5-1,Quadro RTX 6000,windowed_fp16,32768,64,16,,,,,,,6.2456,6.2394,6.2728,514.00

@@ -1,0 +1,70 @@
+=== Host: hpcc-gpu-5-1  Date: 2026-06-07T04:19:44Z ===
+0, Quadro RTX 6000
+1, Quadro RTX 6000
+2, Quadro RTX 6000
+3, Quadro RTX 6000
+
+torch=2.5.1+cu121  cuda=12.1  is_avail=True
+
+=== Build libattn.so ===
+rm -rf build *.nsys-rep *.ncu-rep
+mkdir -p build
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/attn_capi.o src/cli/attn_capi.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/dense.o src/kernels/dense.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/dense_fp16.o src/kernels/dense_fp16.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/windowed.o src/kernels/windowed.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/windowed_fp16.o src/kernels/windowed_fp16.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/blocksparse.o src/kernels/blocksparse.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/blocksparse_fp16.o src/kernels/blocksparse_fp16.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/dispatch.o src/common/dispatch.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/sparse_formats.o src/common/sparse_formats.cu
+nvcc -arch=sm_75 --shared -Xcompiler -fPIC -o build/libattn.so build/attn_capi.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/blocksparse_fp16.o build/dispatch.o build/sparse_formats.o
+
+=== End-to-end layer benchmark, d=64 (d_model=1024, H=16) ===
+d_model=1024  H=16  d_head=64  w=256
+sequence lengths: [1024, 2048, 4096, 8192, 16384, 32768]
+our kernels: ['windowed_fp16', 'dense_fp16']
+  sdpa_fp16_layer   N=  1024: median=   0.381 ms
+  sdpa_fp16_layer   N=  2048: median=   0.916 ms
+  sdpa_fp16_layer   N=  4096: median=   2.792 ms
+  sdpa_fp16_layer   N=  8192: median=   9.475 ms
+  sdpa_fp16_layer   N= 16384: median=  34.986 ms
+  sdpa_fp16_layer   N= 32768: median= 135.889 ms
+    ours_windowed_fp16_layer  N=  1024: median=   0.972 ms
+    ours_windowed_fp16_layer  N=  2048: median=   1.777 ms
+    ours_windowed_fp16_layer  N=  4096: median=   3.389 ms
+    ours_windowed_fp16_layer  N=  8192: median=   6.715 ms
+    ours_windowed_fp16_layer  N= 16384: median=  13.173 ms
+    ours_windowed_fp16_layer  N= 32768: median=  25.969 ms
+       ours_dense_fp16_layer  N=  1024: median=   1.066 ms
+       ours_dense_fp16_layer  N=  2048: median=   3.019 ms
+       ours_dense_fp16_layer  N=  4096: median=  10.827 ms
+       ours_dense_fp16_layer  N=  8192: median=  41.692 ms
+       ours_dense_fp16_layer  N= 16384: median= 159.631 ms
+       ours_dense_fp16_layer  N= 32768: median= 631.323 ms
+
+Wrote /home/cme213/esampi/project/report/data/end_to_end_hpcc-gpu-5-1_91290.csv
+
+=== End-to-end layer benchmark, d=128 (d_model=2048, H=16) ===
+d_model=2048  H=16  d_head=128  w=256
+sequence lengths: [1024, 2048, 4096, 8192, 16384]
+our kernels: ['windowed_fp16', 'dense_fp16']
+  sdpa_fp16_layer   N=  1024: median=   0.838 ms
+  sdpa_fp16_layer   N=  2048: median=   2.165 ms
+  sdpa_fp16_layer   N=  4096: median=   6.441 ms
+  sdpa_fp16_layer   N=  8192: median=  21.266 ms
+  sdpa_fp16_layer   N= 16384: median=  77.409 ms
+    ours_windowed_fp16_layer  N=  1024: median=   2.354 ms
+    ours_windowed_fp16_layer  N=  2048: median=   4.655 ms
+    ours_windowed_fp16_layer  N=  4096: median=   9.274 ms
+    ours_windowed_fp16_layer  N=  8192: median=  18.453 ms
+    ours_windowed_fp16_layer  N= 16384: median=  36.361 ms
+       ours_dense_fp16_layer  N=  1024: median=   3.566 ms
+       ours_dense_fp16_layer  N=  2048: median=  11.950 ms
+       ours_dense_fp16_layer  N=  4096: median=  51.663 ms
+       ours_dense_fp16_layer  N=  8192: median= 198.563 ms
+       ours_dense_fp16_layer  N= 16384: median= 784.985 ms
+
+Wrote /home/cme213/esampi/project/report/data/end_to_end_hpcc-gpu-5-1_91290.csv
+
+=== Done ===

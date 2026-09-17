@@ -1,0 +1,2 @@
+nvlink fatal   : Could not open input file 'build/attn_main.o'
+make: *** [Makefile:74: build/attn] Error 1

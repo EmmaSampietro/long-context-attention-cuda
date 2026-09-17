@@ -1,0 +1,7 @@
+=== Host: hpcc-gpu-5-5  Date: 2026-06-05T20:46:39Z ===
+0, Quadro RTX 6000
+1, Quadro RTX 6000
+2, Quadro RTX 6000
+3, Quadro RTX 6000
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -ccbin mpicxx -Isrc/common -c -o build/seq_parallel.o src/mpi/seq_parallel.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/dense_fp16.o src/kernels/dense_fp16.cu

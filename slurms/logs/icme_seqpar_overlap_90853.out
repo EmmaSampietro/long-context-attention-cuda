@@ -1,0 +1,28 @@
+=== Host: hpcc-gpu-5-1  Date: 2026-06-05T01:52:12Z ===
+RANKS=4  N_LIST=4096 8192 16384  H=16  w=256
+0, Quadro RTX 6000
+1, Quadro RTX 6000
+2, Quadro RTX 6000
+3, Quadro RTX 6000
+make: Nothing to be done for 'mpi-seqpar'.
+
+------ N=4096 overlap=0 ------
+mpi=seqpar ranks=4 kernel=windowed N=4096 d=64 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=2.4115
+
+------ N=4096 overlap=1 ------
+mpi=seqpar ranks=4 kernel=windowed N=4096 d=64 H=16 w=256 G=0 causal=0 overlap=1 ms_per_iter=2.0281
+
+------ N=8192 overlap=0 ------
+mpi=seqpar ranks=4 kernel=windowed N=8192 d=64 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=4.1625
+
+------ N=8192 overlap=1 ------
+mpi=seqpar ranks=4 kernel=windowed N=8192 d=64 H=16 w=256 G=0 causal=0 overlap=1 ms_per_iter=3.8124
+
+------ N=16384 overlap=0 ------
+mpi=seqpar ranks=4 kernel=windowed N=16384 d=64 H=16 w=256 G=0 causal=0 overlap=0 ms_per_iter=7.3173
+
+------ N=16384 overlap=1 ------
+mpi=seqpar ranks=4 kernel=windowed N=16384 d=64 H=16 w=256 G=0 causal=0 overlap=1 ms_per_iter=7.2453
+
+Summary CSV written to report/data/icme_seqpar_overlap_hpcc-gpu-5-1_90853.csv
+=== Done ===

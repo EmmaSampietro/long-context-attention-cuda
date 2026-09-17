@@ -1,0 +1,2 @@
+timestamp,host,gpu_model,kernel,N,d,H,w,G,B,rho_requested,rho_achieved,nnz,ms_median,ms_min,ms_max,mem_mb
+2026-06-07T04:43:36Z,hpcc-gpu-5-1,Quadro RTX 6000,torch_sdpa_fp16,131072,64,16,,,,,,,2123.1389,2120.4272,2123.8630,1280.00

@@ -1,0 +1,58 @@
+=== Host: hpcc-gpu-5-2  Date: 2026-06-07T00:07:54Z ===
+0, Quadro RTX 6000
+1, Quadro RTX 6000
+2, Quadro RTX 6000
+3, Quadro RTX 6000
+
+=== make clean && make all (also build mpi-headpar / mpi-seqpar) ===
+rm -rf build *.nsys-rep *.ncu-rep
+mkdir -p build
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/attn_main.o src/cli/attn_main.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/dense.o src/kernels/dense.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/dense_fp16.o src/kernels/dense_fp16.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/windowed.o src/kernels/windowed.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/windowed_fp16.o src/kernels/windowed_fp16.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/blocksparse.o src/kernels/blocksparse.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/blocksparse_fp16.o src/kernels/blocksparse_fp16.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/dispatch.o src/common/dispatch.cu
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/sparse_formats.o src/common/sparse_formats.cu
+nvcc -arch=sm_75 -o build/attn build/attn_main.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/blocksparse_fp16.o build/dispatch.o build/sparse_formats.o
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/test_dense.o tests/test_dense.cu
+nvcc -arch=sm_75 -o build/test_dense build/test_dense.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/blocksparse_fp16.o build/dispatch.o build/sparse_formats.o
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/test_windowed.o tests/test_windowed.cu
+nvcc -arch=sm_75 -o build/test_windowed build/test_windowed.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/blocksparse_fp16.o build/dispatch.o build/sparse_formats.o
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -Isrc/common -c -o build/test_blocksparse.o tests/test_blocksparse.cu
+nvcc -arch=sm_75 -o build/test_blocksparse build/test_blocksparse.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/blocksparse_fp16.o build/dispatch.o build/sparse_formats.o
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -ccbin mpicxx -Isrc/common -c -o build/head_parallel.o src/mpi/head_parallel.cu
+nvcc -arch=sm_75 -ccbin mpicxx -o build/attn_mpi_headpar build/head_parallel.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/blocksparse_fp16.o build/dispatch.o build/sparse_formats.o
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall -std=c++17 -ccbin mpicxx -Isrc/common -c -o build/seq_parallel.o src/mpi/seq_parallel.cu
+nvcc -arch=sm_75 -ccbin mpicxx -o build/attn_mpi_seqpar build/seq_parallel.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/blocksparse_fp16.o build/dispatch.o build/sparse_formats.o
+
+=== 1.1) Block-sparse causal at rho=1.0 vs dense causal ===
+kernel=dense N=256 d=64 H=1 w=128 G=0 causal=1 ms_median=0.9348 ms_min=0.9348 ms_max=0.9348 mem_mb=2.00
+kernel=blocksparse N=256 d=64 H=1 B=64 rho=1.0000 nnz=16 causal=1 ms_median=0.9549 ms_min=0.9549 ms_max=0.9549 mem_mb=2.00
+  max_abs=0.000e+00  rel_l2=0.000e+00
+  1.1 OK
+
+=== 1.2) Block-sparse WMMA (C2) vs FP32 block-sparse at rho=0.25 ===
+kernel=blocksparse N=256 d=64 H=1 B=64 rho=0.3125 nnz=5 causal=0 ms_median=1.0035 ms_min=1.0035 ms_max=1.0035 mem_mb=2.00
+kernel=blocksparse_fp16 N=256 d=64 H=1 B=64 rho=0.3125 nnz=5 causal=0 ms_median=0.2209 ms_min=0.2209 ms_max=0.2209 mem_mb=2.00
+  max_abs=1.978e-04  rel_l2=4.480e-05
+  1.2 OK (FP16 envelope)
+
+=== 1.2b) Wall time: block-sparse FP32 vs FP16 WMMA at N=4096 ===
+--- block-sparse FP32 chunked ---
+kernel=blocksparse N=4096 d=64 H=16 B=64 rho=0.1045 nnz=428 causal=0 ms_median=4.5687 ms_min=4.5542 ms_max=4.5908 mem_mb=68.00
+--- block-sparse FP16 WMMA ---
+kernel=blocksparse_fp16 N=4096 d=64 H=16 B=64 rho=0.1045 nnz=428 causal=0 ms_median=1.0624 ms_min=1.0528 ms_max=1.0676 mem_mb=68.00
+
+=== 1.3) Block-sparse via head-parallel MPI (4 ranks) ===
+mpi=headpar ranks=4 kernel=blocksparse N=4096 d=64 H=16 w=128 G=0 causal=0 ms_per_iter=5.6176
+
+=== 1.3b) Block-sparse FP16 via head-parallel MPI (4 ranks) ===
+mpi=headpar ranks=4 kernel=blocksparse_fp16 N=4096 d=64 H=16 w=128 G=0 causal=0 ms_per_iter=4.5930
+
+=== 2) Seq-par windowed with G=8 (FP32, 4 ranks) ===
+mpi=seqpar ranks=4 kernel=windowed N=4096 d=64 H=16 w=256 G=8 causal=0 overlap=0 ms_per_iter=4.7605
+
+=== Done ===

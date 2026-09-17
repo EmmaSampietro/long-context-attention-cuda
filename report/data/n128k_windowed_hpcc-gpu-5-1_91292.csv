@@ -1,0 +1,2 @@
+timestamp,host,gpu_model,kernel,N,d,H,w,G,B,rho_requested,rho_achieved,nnz,ms_median,ms_min,ms_max,mem_mb
+2026-06-07T04:42:37Z,hpcc-gpu-5-1,Quadro RTX 6000,windowed,131072,64,16,256,0,,,,,198.1471,197.8647,198.6563,2050.00

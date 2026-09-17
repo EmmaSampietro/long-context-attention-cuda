@@ -1,0 +1,38 @@
+=== Host: hpcc-gpu-5-1  Date: 2026-06-07T04:42:31Z ===
+0, Quadro RTX 6000, 23040 MiB
+1, Quadro RTX 6000, 23040 MiB
+2, Quadro RTX 6000, 23040 MiB
+3, Quadro RTX 6000, 23040 MiB
+
+=== make all ===
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/attn_main.o src/cli/attn_main.cu
+nvcc -arch=sm_75 -o build/attn build/attn_main.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/blocksparse_fp16.o build/dispatch.o build/sparse_formats.o
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/test_dense.o tests/test_dense.cu
+nvcc -arch=sm_75 -o build/test_dense build/test_dense.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/blocksparse_fp16.o build/dispatch.o build/sparse_formats.o
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/test_windowed.o tests/test_windowed.cu
+nvcc -arch=sm_75 -o build/test_windowed build/test_windowed.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/blocksparse_fp16.o build/dispatch.o build/sparse_formats.o
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -Isrc/common -c -o build/test_blocksparse.o tests/test_blocksparse.cu
+nvcc -arch=sm_75 -o build/test_blocksparse build/test_blocksparse.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/blocksparse_fp16.o build/dispatch.o build/sparse_formats.o
+
+=== windowed FP32 chunked at N=131072 ===
+  windowed    N=131072  ms_median=198.1471  mem_mb=2050.00
+
+appended to report/data/n128k_windowed_hpcc-gpu-5-1_91292.csv
+
+=== windowed FP16 WMMA at N=131072 ===
+  windowed_fp16 N=131072  ms_median=42.9236  mem_mb=2050.00
+
+appended to report/data/n128k_windowed_fp16_hpcc-gpu-5-1_91292.csv
+
+=== dense FP16 WMMA at N=131072 (slow; iters=3) ===
+  dense_fp16  N=131072  ms_median=9946.6357  mem_mb=2050.00
+
+appended to report/data/n128k_dense_fp16_hpcc-gpu-5-1_91292.csv
+
+=== SDPA-FP16 baseline at N=131072 (torch / FA-2) ===
+torch 2.5.1+cu121  cuda 12.1  device Quadro RTX 6000
+  torch_sdpa_fp16    N=131072  ms_median=2123.1389  mem_mb= 1280.00
+
+appended to report/data/n128k_sdpa_fp16_hpcc-gpu-5-1_91292.csv
+
+=== Done ===

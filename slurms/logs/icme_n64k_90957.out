@@ -1,0 +1,23 @@
+=== Host: hpcc-gpu-5-5  Date: 2026-06-05T21:02:15Z ===
+0, Quadro RTX 6000, 23040 MiB
+1, Quadro RTX 6000, 23040 MiB
+2, Quadro RTX 6000, 23040 MiB
+3, Quadro RTX 6000, 23040 MiB
+make: Nothing to be done for 'all'.
+
+=== windowed FP32 chunked at N=65536 ===
+  windowed    N= 65536  ms_median=74.8613  mem_mb=1026.00
+
+appended to report/data/n64k_windowed_hpcc-gpu-5-5_90957.csv
+
+=== windowed FP16 WMMA at N=65536 ===
+  windowed_fp16 N= 65536  ms_median=9.5892  mem_mb=1026.00
+
+appended to report/data/n64k_windowed_fp16_hpcc-gpu-5-5_90957.csv
+
+=== dense FP16 WMMA at N=65536 ===
+  dense_fp16  N= 65536  ms_median=2034.3995  mem_mb=1026.00
+
+appended to report/data/n64k_dense_fp16_hpcc-gpu-5-5_90957.csv
+
+=== Done ===

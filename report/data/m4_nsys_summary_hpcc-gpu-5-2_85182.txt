@@ -1,0 +1,63 @@
+
+================ m4_headpar_dense ================
+
+--- CUDA kernel summary ---
+Generating SQLite file analysis/profiling/runs/m4_headpar_dense_N4096_R4_hpcc-gpu-5-2_85182_rank0.sqlite from analysis/profiling/runs/m4_headpar_dense_N4096_R4_hpcc-gpu-5-2_85182_rank0.nsys-rep
+Processing [analysis/profiling/runs/m4_headpar_dense_N4096_R4_hpcc-gpu-5-2_85182_rank0.sqlite] with [/home/cme213/software/nvidia-hpc-sdk/2024_24.1/Linux_x86_64/24.1/profilers/Nsight_Systems/host-linux-x64/reports/cuda_gpu_kern_sum.py]... 
+
+ ** CUDA GPU Kernel Summary (cuda_gpu_kern_sum):
+
++----------+-----------------+-----------+-----------+-----------+----------+----------+-------------+------------------------------------------------------------------------------------------------------+
+| Time (%) | Total Time (ns) | Instances | Avg (ns)  | Med (ns)  | Min (ns) | Max (ns) | StdDev (ns) |                                                 Name                                                 |
++----------+-----------------+-----------+-----------+-----------+----------+----------+-------------+------------------------------------------------------------------------------------------------------+
+|    100.0 |        65644632 |        16 | 4102789.5 | 4654911.5 |  2357072 |  4740223 |   1030274.0 | void <unnamed>::dense_forward_kernel<(int)64, (int)64, (int)64>(const float *, const float *, const… |
++----------+-----------------+-----------+-----------+-----------+----------+----------+-------------+------------------------------------------------------------------------------------------------------+
+
+
+--- MPI event summary ---
+Generating SQLite file analysis/profiling/runs/m4_headpar_dense_N4096_R4_hpcc-gpu-5-2_85182_rank0.sqlite from analysis/profiling/runs/m4_headpar_dense_N4096_R4_hpcc-gpu-5-2_85182_rank0.nsys-rep
+Processing [analysis/profiling/runs/m4_headpar_dense_N4096_R4_hpcc-gpu-5-2_85182_rank0.sqlite] with [mpi_event_sum]... 
+ERROR: Report 'mpi_event_sum' could not be found.
+
+
+================ m4_headpar_windowed ================
+
+--- CUDA kernel summary ---
+Generating SQLite file analysis/profiling/runs/m4_headpar_windowed_N4096_R4_hpcc-gpu-5-2_85182_rank0.sqlite from analysis/profiling/runs/m4_headpar_windowed_N4096_R4_hpcc-gpu-5-2_85182_rank0.nsys-rep
+Processing [analysis/profiling/runs/m4_headpar_windowed_N4096_R4_hpcc-gpu-5-2_85182_rank0.sqlite] with [/home/cme213/software/nvidia-hpc-sdk/2024_24.1/Linux_x86_64/24.1/profilers/Nsight_Systems/host-linux-x64/reports/cuda_gpu_kern_sum.py]... 
+
+ ** CUDA GPU Kernel Summary (cuda_gpu_kern_sum):
+
++----------+-----------------+-----------+-----------+-----------+----------+----------+-------------+------------------------------------------------------------------------------------------------------+
+| Time (%) | Total Time (ns) | Instances | Avg (ns)  | Med (ns)  | Min (ns) | Max (ns) | StdDev (ns) |                                                 Name                                                 |
++----------+-----------------+-----------+-----------+-----------+----------+----------+-------------+------------------------------------------------------------------------------------------------------+
+|    100.0 |        35279659 |        16 | 2204978.7 | 2234928.0 |  2088818 |  2277040 |     58812.4 | void <unnamed>::windowed_forward_kernel<(int)64, (int)64, (int)64>(const float *, const float *, co… |
++----------+-----------------+-----------+-----------+-----------+----------+----------+-------------+------------------------------------------------------------------------------------------------------+
+
+
+--- MPI event summary ---
+Generating SQLite file analysis/profiling/runs/m4_headpar_windowed_N4096_R4_hpcc-gpu-5-2_85182_rank0.sqlite from analysis/profiling/runs/m4_headpar_windowed_N4096_R4_hpcc-gpu-5-2_85182_rank0.nsys-rep
+Processing [analysis/profiling/runs/m4_headpar_windowed_N4096_R4_hpcc-gpu-5-2_85182_rank0.sqlite] with [mpi_event_sum]... 
+ERROR: Report 'mpi_event_sum' could not be found.
+
+
+================ m4_seqpar_windowed ================
+
+--- CUDA kernel summary ---
+Generating SQLite file analysis/profiling/runs/m4_seqpar_windowed_N4096_R4_hpcc-gpu-5-2_85182_rank0.sqlite from analysis/profiling/runs/m4_seqpar_windowed_N4096_R4_hpcc-gpu-5-2_85182_rank0.nsys-rep
+Processing [analysis/profiling/runs/m4_seqpar_windowed_N4096_R4_hpcc-gpu-5-2_85182_rank0.sqlite] with [/home/cme213/software/nvidia-hpc-sdk/2024_24.1/Linux_x86_64/24.1/profilers/Nsight_Systems/host-linux-x64/reports/cuda_gpu_kern_sum.py]... 
+
+ ** CUDA GPU Kernel Summary (cuda_gpu_kern_sum):
+
++----------+-----------------+-----------+----------+----------+----------+----------+-------------+------------------------------------------------------------------------------------------------------+
+| Time (%) | Total Time (ns) | Instances | Avg (ns) | Med (ns) | Min (ns) | Max (ns) | StdDev (ns) |                                                 Name                                                 |
++----------+-----------------+-----------+----------+----------+----------+----------+-------------+------------------------------------------------------------------------------------------------------+
+|    100.0 |        24719515 |        64 | 386242.4 | 363805.5 |   334014 |   547197 |     53107.1 | void <unnamed>::windowed_seqpar_forward_kernel<(int)64, (int)64, (int)64>(const float *, const floa… |
++----------+-----------------+-----------+----------+----------+----------+----------+-------------+------------------------------------------------------------------------------------------------------+
+
+
+--- MPI event summary ---
+Generating SQLite file analysis/profiling/runs/m4_seqpar_windowed_N4096_R4_hpcc-gpu-5-2_85182_rank0.sqlite from analysis/profiling/runs/m4_seqpar_windowed_N4096_R4_hpcc-gpu-5-2_85182_rank0.nsys-rep
+Processing [analysis/profiling/runs/m4_seqpar_windowed_N4096_R4_hpcc-gpu-5-2_85182_rank0.sqlite] with [mpi_event_sum]... 
+ERROR: Report 'mpi_event_sum' could not be found.
+

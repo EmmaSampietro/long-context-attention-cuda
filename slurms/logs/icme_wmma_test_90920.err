@@ -1,0 +1,2 @@
+CUDA error cudaFuncSetAttribute( (const void*)dense_fp16_forward_kernel<Br, Bc, D>, cudaFuncAttributeMaxDynamicSharedMemorySize, smem_bytes) at src/kernels/dense_fp16.cu:285: invalid argument
+/var/spool/slurmd/job90920/slurm_script: line 50: 629027 Aborted                 (core dumped) build/attn --kernel=dense_fp16 --N=256 --H=1 --d=64 --warmup=0 --iters=1 --seed=42 --out="$TMP/out_fp16.bin"

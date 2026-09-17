@@ -1,0 +1,54 @@
+=== Host: hpcc-gpu-5-1  Date: 2026-06-07T04:54:27Z ===
+0, Quadro RTX 6000
+1, Quadro RTX 6000
+2, Quadro RTX 6000
+3, Quadro RTX 6000
+nvcc -O3 -arch=sm_75 --use_fast_math --generate-line-info -Xcompiler -Wall,-fPIC -std=c++17 -ccbin mpicxx -Isrc/common -c -o build/head_parallel.o src/mpi/head_parallel.cu
+nvcc -arch=sm_75 -ccbin mpicxx -o build/attn_mpi_headpar build/head_parallel.o build/dense.o build/dense_fp16.o build/windowed.o build/windowed_fp16.o build/blocksparse.o build/blocksparse_fp16.o build/dispatch.o build/sparse_formats.o
+
+==========================================
+=== Block-sparse @ d=128, N=16384       ===
+==========================================
+
+------ headpar  kernel=blocksparse  N=16384  ranks=1  d=128 ------
+mpi=headpar ranks=1 kernel=blocksparse N=16384 d=128 H=16 w=128 G=0 causal=0 ms_per_iter=294.1623
+
+------ headpar  kernel=blocksparse_fp16  N=16384  ranks=1  d=128 ------
+mpi=headpar ranks=1 kernel=blocksparse_fp16 N=16384 d=128 H=16 w=128 G=0 causal=0 ms_per_iter=88.4784
+
+------ headpar  kernel=blocksparse  N=16384  ranks=2  d=128 ------
+mpi=headpar ranks=2 kernel=blocksparse N=16384 d=128 H=16 w=128 G=0 causal=0 ms_per_iter=169.5976
+
+------ headpar  kernel=blocksparse_fp16  N=16384  ranks=2  d=128 ------
+mpi=headpar ranks=2 kernel=blocksparse_fp16 N=16384 d=128 H=16 w=128 G=0 causal=0 ms_per_iter=65.7333
+
+------ headpar  kernel=blocksparse  N=16384  ranks=4  d=128 ------
+mpi=headpar ranks=4 kernel=blocksparse N=16384 d=128 H=16 w=128 G=0 causal=0 ms_per_iter=107.0550
+
+------ headpar  kernel=blocksparse_fp16  N=16384  ranks=4  d=128 ------
+mpi=headpar ranks=4 kernel=blocksparse_fp16 N=16384 d=128 H=16 w=128 G=0 causal=0 ms_per_iter=54.5720
+
+==========================================
+=== Dense @ d=128, N=8192               ===
+==========================================
+
+------ headpar  kernel=dense  N=8192  ranks=1  d=128 ------
+mpi=headpar ranks=1 kernel=dense N=8192 d=128 H=16 w=128 G=0 causal=0 ms_per_iter=737.5934
+
+------ headpar  kernel=dense_fp16  N=8192  ranks=1  d=128 ------
+mpi=headpar ranks=1 kernel=dense_fp16 N=8192 d=128 H=16 w=128 G=0 causal=0 ms_per_iter=194.8948
+
+------ headpar  kernel=dense  N=8192  ranks=2  d=128 ------
+mpi=headpar ranks=2 kernel=dense N=8192 d=128 H=16 w=128 G=0 causal=0 ms_per_iter=386.4489
+
+------ headpar  kernel=dense_fp16  N=8192  ranks=2  d=128 ------
+mpi=headpar ranks=2 kernel=dense_fp16 N=8192 d=128 H=16 w=128 G=0 causal=0 ms_per_iter=110.3938
+
+------ headpar  kernel=dense  N=8192  ranks=4  d=128 ------
+mpi=headpar ranks=4 kernel=dense N=8192 d=128 H=16 w=128 G=0 causal=0 ms_per_iter=204.1748
+
+------ headpar  kernel=dense_fp16  N=8192  ranks=4  d=128 ------
+mpi=headpar ranks=4 kernel=dense_fp16 N=8192 d=128 H=16 w=128 G=0 causal=0 ms_per_iter=67.2517
+
+Summary CSV: report/data/icme_mpi_d128_fill_hpcc-gpu-5-1_91294.csv
+=== Done ===

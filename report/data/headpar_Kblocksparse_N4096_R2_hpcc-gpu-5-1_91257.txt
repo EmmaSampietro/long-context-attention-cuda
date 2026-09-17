@@ -1,0 +1,1 @@
+mpi=headpar ranks=2 kernel=blocksparse N=4096 d=64 H=16 w=128 G=0 causal=0 ms_per_iter=5.3275

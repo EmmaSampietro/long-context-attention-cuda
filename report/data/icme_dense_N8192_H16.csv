@@ -1,0 +1,2 @@
+timestamp,host,git_commit,gpu_model,kernel,N,d,H,w,G,ms_median,ms_min,ms_max
+2026-05-10T04:40:55Z,hpcc-gpu-5-1,unknown,Quadro RTX 6000,dense,8192,64,16,0,0,134.4429,133.4517,134.8549

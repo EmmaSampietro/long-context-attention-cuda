@@ -1,0 +1,2 @@
+timestamp,host,gpu_model,kernel,N,d,H,w,G,B,rho_requested,rho_achieved,nnz,ms_median,ms_min,ms_max,mem_mb
+2026-06-05T21:02:18Z,hpcc-gpu-5-5,Quadro RTX 6000,dense_fp16,65536,64,16,,,,,,,2034.3995,1997.8752,2083.5095,1026.00

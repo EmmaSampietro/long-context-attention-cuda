@@ -1,0 +1,14 @@
+CUDA error cudaStreamSynchronize(streams[s]) at src/common/dispatch.cu:111: an illegal memory access was encountered
+/var/spool/slurmd/job91237/slurm_script: line 35: 1671186 Aborted                 (core dumped) build/attn --kernel=$FP16_KERNEL --N=256 --H=1 --d=128 $EXTRA --warmup=0 --iters=1 --seed=42 --out="$TMP/${TAG}_fp16.bin"
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmp.DeoHug4chZ/4.2b-windowed_fp16.bin'
+CUDA error cudaStreamSynchronize(streams[s]) at src/common/dispatch.cu:111: an illegal memory access was encountered
+/var/spool/slurmd/job91237/slurm_script: line 35: 1671214 Aborted                 (core dumped) build/attn --kernel=$FP16_KERNEL --N=256 --H=1 --d=128 $EXTRA --warmup=0 --iters=1 --seed=42 --out="$TMP/${TAG}_fp16.bin"
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmp.DeoHug4chZ/4.2c-blocksparse_fp16.bin'
+CUDA error cudaStreamSynchronize(streams[s]) at src/common/dispatch.cu:111: an illegal memory access was encountered
+/var/spool/slurmd/job91237/slurm_script: line 75: 1671240 Aborted                 (core dumped) build/attn --kernel=windowed_fp16 --N=4096 --H=16 --d=128 --w=256 --G=0 --warmup=3 --iters=10 --seed=42
+CUDA error cudaStreamSynchronize(streams[s]) at src/common/dispatch.cu:111: an illegal memory access was encountered
+/var/spool/slurmd/job91237/slurm_script: line 78: 1671254 Aborted                 (core dumped) build/attn --kernel=blocksparse_fp16 --N=4096 --H=16 --d=128 --rho=0.10 --B=32 --warmup=3 --iters=10 --seed=42
